@@ -1,0 +1,303 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #f4f7fb;
+  color: #1f2937;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.page-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.page-header {
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 34px;
+  color: #172554;
+}
+
+.subtitle {
+  max-width: 650px;
+  margin-top: 12px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.form-card,
+.review-card,
+.empty-state {
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+.section-heading h2,
+.reviews-heading h2 {
+  margin: 0;
+  color: #172554;
+  font-size: 23px;
+}
+
+.section-heading p,
+.reviews-heading p {
+  margin: 8px 0 24px;
+  color: #64748b;
+}
+
+.form-grid,
+.rating-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f2937;
+  font: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: 2px solid #93c5fd;
+  border-color: #2563eb;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.rating-title {
+  margin: 12px 0 20px;
+  color: #172554;
+}
+
+.helper-text {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.error {
+  color: #dc2626;
+  font-size: 12px;
+}
+
+.form-actions,
+.review-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+button {
+  padding: 11px 18px;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.primary-button {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.primary-button:hover {
+  background: #1d4ed8;
+}
+
+.secondary-button {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.secondary-button:hover {
+  background: #cbd5e1;
+}
+
+.delete-button {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.delete-button:hover {
+  background: #fecaca;
+}
+
+.reviews-section {
+  margin-top: 40px;
+}
+
+.reviews-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.reviews-heading p {
+  margin-bottom: 0;
+}
+
+.review-count {
+  padding: 8px 12px;
+  border-radius: 20px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.empty-state h3 {
+  margin-top: 0;
+  color: #172554;
+}
+
+.empty-state p {
+  color: #64748b;
+}
+
+.review-card {
+  margin-bottom: 18px;
+}
+
+.review-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.review-card-header h3 {
+  margin: 0;
+  color: #172554;
+}
+
+.review-card-header p {
+  margin-bottom: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.overall-rating {
+  padding: 8px 12px;
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: 8px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.review-date {
+  margin: 18px 0 8px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.review-content {
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.review-ratings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0;
+}
+
+.review-ratings span {
+  padding: 7px 10px;
+  background: #f1f5f9;
+  color: #475569;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.review-actions {
+  justify-content: flex-end;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 18px;
+}
+
+.page-footer {
+  margin-top: 40px;
+  text-align: center;
+  color: #64748b;
+  font-size: 12px;
+}
+
+@media (max-width: 650px) {
+  .page-container {
+    padding: 24px 16px;
+  }
+
+  .page-header h1 {
+    font-size: 28px;
+  }
+
+  .form-grid,
+  .rating-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form-card,
+  .review-card {
+    padding: 20px;
+  }
+
+  .reviews-heading {
+    align-items: flex-start;
+  }
+}
