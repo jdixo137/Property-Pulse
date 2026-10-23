@@ -1,75 +1,270 @@
-<h2>Property Listings </h2>
-<form [formGroup]="propertyForm">
+<h2>Add Property </h2>
+<form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
+
     <div>
-        <label for="address">Address:</label>
+        <label for="address">Property Address:</label>
         <input 
         id="address"
         type="text"
-        formControlName="address">
+        placeholder="123 Main St, Apt 4B"
+        formControlName="address" required>
+
+        @if (address.invalid && (address.dirty || address.touched)) { 
+            <div class= "alert alert-danger">
+                @if (address.hasError('required')) {
+                    <div> Address is required.</div>
+                }
+        </div>
+    }
     </div>
+
      <div>
         <label for="city">City:</label>
         <input 
         id="city"
         type="text"
+        placeholder="Atlanta"
         formControlName="city">
+        @if (city.invalid && (city.dirty || city.touched)) { 
+            <div class= "alert alert-danger">
+                @if (city.hasError('required')) {
+                    <div> City is required.</div>
+                }
+                </div>
+            }
     </div>
+
      <div>
         <label for="state">State:</label>
         <input 
         id="state"
         type="text"
+        placeholder="GA"
         formControlName="state">
+
+        @if (state.invalid && (state.dirty || state.touched)) { 
+            <div class= "alert alert-danger">
+                @if (state.hasError('required')) {
+                    <div> State is required.</div>
+                }
+                </div>
+            }
+
     </div>
+
      <div>
-        <label for="zip">Address:</label>
+        <label for="zip">Zipcode:</label>
         <input 
         id="zip"
         type="text"
+        placeholder="30090"
         formControlName="zip">
+
+        @if (zip.invalid && (zip.dirty || zip.touched)) {
+            <div class= "alert alert-danger">
+                @if (zip.hasError('required')) {
+                    <div> Zipcode is requried. </div>
+                }
+                @if (zip.hasError('pattern')) {
+                    <div> Zipcode must be 5 digits. </div>
+                }
+                </div>
+            }
     </div>
+
      <div>
         <label for="property-type">Property Type:</label>
-        <input 
-        id="propety-type"
-        type="text"
+        <select 
+        id="property-type"
         formControlName="propertyType">
+        <option value="">select</option>
+        <option value="house">House</option>
+        <option value="townhouse">Townhouse</option>
+        <option value="condo">Condo</option>
+        <option value="coop">Co-op</option>
+        <option value="apartment">Apartment</option>
+        <option value="mobile">Mobile</option>   
+        </select>@if (propertyType.invalid && (propertyType.dirty || propertyType.touched)) { 
+            <div class= "alert alert-danger">
+                @if (propertyType.hasError('required')) {
+                    <div> Property type is required.</div>
+                }
+                </div>
+            }
+
     </div>
 
      <div>
         <label for="rent-price">Rent Price:</label>
         <input 
         id="rent-price"
-        type="text"
+        type="number"
+        placeholder="1200"
         formControlName="rentPrice">
+
+        @if (rentPrice.invalid && (rentPrice.dirty || rentPrice.touched)) { 
+            <div class= "alert alert-danger">
+                @if (rentPrice.hasError('required')) {
+                    <div> Rent price is required.</div>
+                }
+                </div>
+            }
+
+            @if (rentPrice.invalid && (rentPrice.dirty || rentPrice.touched)) { 
+            <div class= "alert alert-danger">
+                @if (rentPrice.hasError('min')) {
+                    <div> Rent price must be greater than 100.</div>
+                }
+                </div>
+            }
+
     </div>
+
     <div>
         <label for="beds">Bedrooms:</label>
-        <input 
+        <select 
         id="beds"
-        type="text"
         formControlName="beds">
+        <option value=""></option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>   
+        </select>
+
+        @if (beds.invalid && (beds.dirty || beds.touched)) { 
+            <div class= "alert alert-danger">
+                @if (beds.hasError('required')) {
+                    <div> Number of bedrooms is required.</div>
+                }
+                </div>
+            }
+
     </div>
+
     <div>
         <label for="baths">Bathrooms:</label>
-        <input 
+        <select 
         id="baths"
-        type="text"
         formControlName="baths">
+        <option value=""></option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>   
+        </select>
+
+        @if (baths.invalid && (baths.dirty || baths.touched)) { 
+            <div class= "alert alert-danger">
+                @if (baths.hasError('required')) {
+                    <div> Number of baths is required.</div>
+                }
+                </div>
+            }
+        
     </div>
+
     <div>
-        <label for="amentities">Popular Amentities:</label>
-        <input 
-        id="amentities"
-        type="text"
-        formControlName="amentities">
+        <label for="amenities">Popular Amenities:</label>
+        <div formGroupName="amenities">
+
+            <input 
+            type="checkbox" 
+            id="dishwasher"
+            formControlName="dishwasher"> 
+            <label for="dishwasher">Dishwasher</label>
+
+            <input 
+            type="checkbox" 
+            id="basement"
+            formControlName="basement"> 
+            <label for="basement">Basement</label>
+
+            <input 
+            type="checkbox" 
+            id="fireplace"
+            formControlName="fireplace"> 
+            <label for="fireplace">Fireplace</label>
+
+            <input 
+            type="checkbox" 
+            id="laundry"
+            formControlName="laundry"> 
+            <label for="laundry">Laundry In-Unit</label>
+
+            <input 
+            type="checkbox" 
+            id="closet"
+            formControlName="closet"> 
+            <label for="closet">Walk In Closet</label>
+
+            <input 
+            type="checkbox" 
+            id="hardwoood"
+            formControlName="hardwood"> 
+            <label for="hardwood">Hardwood Floors</label>
+
+            <input 
+            type="checkbox" 
+            id="pool"
+            formControlName="pool"> 
+            <label for="pool">Community Pool</label>
+
+            <input 
+            type="checkbox" 
+            id="porch"
+            formControlName="porch"> 
+            <label for="porch">Porch</label>
+
+            <input 
+            type="checkbox" 
+            id="deck"
+            formControlName="deck"> 
+            <label for="deck">Deck</label>
+
+            <input 
+            type="checkbox" 
+            id="gated"
+            formControlName="gated"> 
+            <label for="gated">Gated Community</label>
+
+            <input 
+            type="checkbox" 
+            id="playground"
+            formControlName="playground"> 
+            <label for="playground">Playground</label>
+        </div>
+    
     </div>
+
     <div>
         <label for="landlord">Landlord:</label>
-        <input 
+        <select 
         id="landlord"
-        type="text"
         formControlName="landlord">
+        <option value="">select </option>
+        <option value="1">Tony Stark</option>
+        <option value="2">Peter Parker</option>
+        <option value="3">Mark Banner</option> 
+        </select>
+
+        <button  type="button">Add a Landlord</button>
+
+        @if (landlord.invalid && (landlord.dirty || landlord.touched)) { 
+            <div class= "alert alert-danger">
+                @if (landlord.hasError('required')) {
+                    <div> Landlord is required. Not listed? Click “Add a Landlord.”</div>
+                }
+                </div>
+            }
+
+
     </div>
     
+      <button  type="submit">Save</button>
+
 </form>
