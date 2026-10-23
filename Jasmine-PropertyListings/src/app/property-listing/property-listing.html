@@ -64,7 +64,7 @@
         @if (zip.invalid && (zip.dirty || zip.touched)) {
             <div class= "alert alert-danger">
                 @if (zip.hasError('required')) {
-                    <div> Zipcode is requried. </div>
+                    <div> Zipcode is required. </div>
                 }
                 @if (zip.hasError('pattern')) {
                     <div> Zip code must be 5 digits. </div>
