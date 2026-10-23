@@ -1,0 +1,83 @@
+
+<section class="card">
+  <h2>{{ editingId === null ? 'Create Landlord Profile' : 'Edit Landlord Profile' }}</h2>
+    <form [formGroup] = "landlordForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-field">
+            <label for="llandlordName">Landlord Name</label>
+                <input type="text" id="landlordName" formControlName="landlordName">
+                @if (landlordName.invalid && landlordName.touched) {<p class="error"> landlord name is required. Please type at least 2 Characters. </p>}
+            <label for="email">Email</label>
+                <input type="text" id="email" formControlName="email">
+                @if (email.invalid && email.touched) {<p class="error">Please enter a valid email address.</p>}
+            <label for="phone">Phone</label>
+                <input type="tel" id="phone" formControlName="phone" placeholder="000-000-0000">
+                @if (phone.invalid && phone.touched) { <p class="error">Use the format 000-000-0000.</p> }
+                <label for ="propertiesOwned">Properties</label>
+                <input id="propertiesOwned" type="number" min="0" formControlName="propertiesOwned">
+                @if (propertiesOwned.invalid && propertiesOwned.touched) { <p class="error"> How Many Properties do you manage?</p>}
+        </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"[disabled]="landlordForm.invalid">{{ editingId === null ? 'Create Landlord' : 'Save Changes' }}</button>
+            @if (editingId !== null) {
+        <button type="button" class="btn btn-secondary"(click)="cancelEdit()">Cancel</button>
+                                            }
+    </div>
+    </form>
+    @if (message) {<p class="success">{{ message }}</p>}
+ <section>
+<div class="list-header">
+  <h2>Landlord Profiles</h2>
+  <button type="button" class="btn btn-secondary" (click)="toggleArchived()">
+    {{ showArchived ? 'Hide Archived' : 'Show Archived' }}
+  </button>
+</div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Landlord</th>
+                    <th>Contact</th>
+                    <th>Properties</th>
+                    <th>Reputation Score</th>
+                    <th>Total Reviews</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (landlord of visibleLandlords; track landlord.landlordId) 
+                {
+                    <tr [ngClass]="{ 'archived-row': landlord.isArchived, 'editing-row': landlord.landlordId === editingId }">
+                        <td>{{landlord.landlordId}}</td>
+                        <td>{{landlord.landlordName}}</td>
+                        <td>{{ landlord.email }}<br>{{ landlord.phone }}</td>
+                        <td>{{ landlord.propertiesOwned }}</td>
+                        <td>
+                            <span class="rating" [ngClass]="getRatingClass(landlord)">{{ landlord.totalReviews > 0 ? landlord.averageRating + ' / 5' : 'No reviews yet' }}</span>
+                        </td>
+                        <td>{{ landlord.totalReviews }}</td>
+                        <td>
+                            <span class="status-badge" [ngClass]="landlord.isArchived ? 'status-archived' : 'status-active'">{{ landlord.isArchived ? 'Archived' : 'Active' }}</span>
+                        </td>
+                        <td class="actions">
+                             @if (!landlord.isArchived) {
+                                    <button type="button" class="btn btn-small"(click)="editLandlord(landlord)">Edit</button>
+                                    <button type="button" class="btn btn-small btn-danger"(click)="archiveLandlord(landlord)">Archive</button>
+                                    } @else {
+                                    <button type="button" class="btn btn-small"(click)="restoreLandlord(landlord)">Restore</button>
+                                    }
+                        </td>
+                    </tr>
+                } @empty {
+                    <tr>
+                        <td colspan="8" class="empty">No landlord profiles to show.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+ </section>
+</section>
