@@ -1,0 +1,326 @@
+<!--Source: https://angular.dev/guide/forms/reactive-forms, -->
+<section class="card">
+<h2>{{ editingId === null ? 'Add Property' : 'Edit Property' }}</h2>
+<form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-field">
+        <label for="address">Property Address:</label>
+        <input 
+        id="address"
+        type="text"
+        placeholder="123 Main St, Apt 4B"
+        formControlName="address" required>
+
+        @if (address.invalid && (address.dirty || address.touched)) { 
+            <div class="error">
+                @if (address.hasError('required')) {
+                    <div> Address is required.</div>
+                }
+        </div>
+    }
+    </div>
+
+     <div class="form-field">
+        <label for="city">City:</label>
+        <input 
+        id="city"
+        type="text"
+        placeholder="Atlanta"
+        formControlName="city">
+        @if (city.invalid && (city.dirty || city.touched)) { 
+            <div class="error">
+                @if (city.hasError('required')) {
+                    <div> City is required.</div>
+                }
+                </div>
+            }
+    </div>
+
+     <div class="form-field">
+        <label for="state">State:</label>
+        <input 
+        id="state"
+        type="text"
+        placeholder="GA"
+        formControlName="state">
+
+        @if (state.invalid && (state.dirty || state.touched)) { 
+            <div class="error">
+                @if (state.hasError('required')) {
+                    <div> State is required.</div>
+                }
+                </div>
+            }
+
+    </div>
+
+     <div class="form-field">
+        <label for="zip">Zip code:</label>
+        <input 
+        id="zip"
+        type="text"
+        placeholder="30090"
+        formControlName="zip">
+
+        @if (zip.invalid && (zip.dirty || zip.touched)) {
+            <div class="error">
+                @if (zip.hasError('required')) {
+                    <div> Zipcode is required. </div>
+                }
+                @if (zip.hasError('pattern')) {
+                    <div> Zip code must be 5 digits. </div>
+                }
+                </div>
+            }
+    </div>
+
+     <div class="form-field">
+        <label for="property-type">Property Type:</label>
+        <select 
+        id="property-type"
+        formControlName="propertyType">
+        <option value="">select</option>
+        <option value="house">House</option>
+        <option value="townhouse">Townhouse</option>
+        <option value="condo">Condo</option>
+        <option value="coop">Co-op</option>
+        <option value="apartment">Apartment</option>
+        <option value="mobile">Mobile</option>   
+        </select>@if (propertyType.invalid && (propertyType.dirty || propertyType.touched)) { 
+            <div class="error">
+                @if (propertyType.hasError('required')) {
+                    <div> Property type is required.</div>
+                }
+                </div>
+            }
+
+    </div>
+
+     <div class="form-field">
+        <label for="rent-price">Rent Price:</label>
+        <input 
+        id="rent-price"
+        type="number"
+        placeholder="1200"
+        formControlName="rentPrice">
+
+        @if (rentPrice.invalid && (rentPrice.dirty || rentPrice.touched)) { 
+            <div class="error">
+                @if (rentPrice.hasError('required')) {
+                    <div> Rent price is required.</div>
+                }
+                @if (rentPrice.hasError('min')) {
+                    <div> Rent price must be greater than 100.</div>
+                }
+                </div>
+            }
+
+    </div>
+
+    <div class="form-field">
+        <label for="beds">Bedrooms:</label>
+        <select 
+        id="beds"
+        formControlName="beds">
+        <option value=""></option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>   
+        </select>
+
+        @if (beds.invalid && (beds.dirty || beds.touched)) { 
+            <div class="error">
+                @if (beds.hasError('required')) {
+                    <div> Number of bedrooms is required.</div>
+                }
+                </div>
+            }
+
+    </div>
+
+    <div class="form-field">
+        <label for="baths">Bathrooms:</label>
+        <select 
+        id="baths"
+        formControlName="baths">
+        <option value=""></option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>   
+        </select>
+
+        @if (baths.invalid && (baths.dirty || baths.touched)) { 
+            <div class="error">
+                @if (baths.hasError('required')) {
+                    <div> Number of baths is required.</div>
+                }
+                </div>
+            }
+        
+    </div>
+
+    <div class="form-field">
+        <label for="amenities">Popular Amenities:</label>
+        <div formGroupName="amenities">
+
+            <input 
+            type="checkbox" 
+            id="dishwasher"
+            formControlName="dishwasher"> 
+            <label for="dishwasher">Dishwasher</label>
+
+            <input 
+            type="checkbox" 
+            id="basement"
+            formControlName="basement"> 
+            <label for="basement">Basement</label>
+
+            <input 
+            type="checkbox" 
+            id="fireplace"
+            formControlName="fireplace"> 
+            <label for="fireplace">Fireplace</label>
+
+            <input 
+            type="checkbox" 
+            id="laundry"
+            formControlName="laundry"> 
+            <label for="laundry">Laundry In-Unit</label>
+
+            <input 
+            type="checkbox" 
+            id="closet"
+            formControlName="closet"> 
+            <label for="closet">Walk In Closet</label>
+
+            <input 
+            type="checkbox" 
+            id="hardwoood"
+            formControlName="hardwood"> 
+            <label for="hardwood">Hardwood Floors</label>
+
+            <input 
+            type="checkbox" 
+            id="pool"
+            formControlName="pool"> 
+            <label for="pool">Community Pool</label>
+
+            <input 
+            type="checkbox" 
+            id="porch"
+            formControlName="porch"> 
+            <label for="porch">Porch</label>
+
+            <input 
+            type="checkbox" 
+            id="deck"
+            formControlName="deck"> 
+            <label for="deck">Deck</label>
+
+            <input 
+            type="checkbox" 
+            id="gated"
+            formControlName="gated"> 
+            <label for="gated">Gated Community</label>
+
+            <input 
+            type="checkbox" 
+            id="playground"
+            formControlName="playground"> 
+            <label for="playground">Playground</label>
+        </div>
+    
+    </div>
+
+    <div class="form-field">
+        <label for="landlord">Landlord:</label>
+        <select 
+        id="landlord"
+        formControlName="landlord">
+        <option value="">select </option>
+        @for (l of activeLandlords; track l._id) {
+            <option [value]="l._id">{{ l.landlordName }}</option>
+        }
+        </select>
+
+        <a routerLink="/landlords" class="btn btn-secondary add-landlord">Add a Landlord</a>
+
+        @if (landlord.invalid && (landlord.dirty || landlord.touched)) { 
+            <div class="error">
+                @if (landlord.hasError('required')) {
+                    <div> Landlord is required. Not listed? Click “Add a Landlord.”</div>
+                }
+                </div>
+            }
+
+
+    </div>
+    
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">{{ editingId === null ? 'Save' : 'Save Changes' }}</button>
+        @if (editingId !== null) {
+            <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+        }
+      </div>
+
+</form>
+
+@if (message) {
+    <p class="success">{{ message }}</p>
+}
+</section>
+
+<section class="card">
+<div class="list-header">
+    <h2>Property Listings</h2>
+    <button type="button" class="btn btn-secondary" (click)="showArchived = !showArchived">
+        {{ showArchived ? 'Hide Archived' : 'Show Archived' }}
+    </button>
+</div>
+
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                                <th>Address</th>
+                <th>Type</th>
+                <th>Rent</th>
+                <th>Beds / Baths</th>
+                <th>Landlord</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (p of visibleProperties; track p._id) {
+                <tr [class.archived-row]="p.isArchived" [class.editing-row]="p._id === editingId">
+                                        <td>{{ p.address }}<br>{{ p.city }}, {{ p.state }} {{ p.zip }}</td>
+                    <td class="capitalize">{{ p.propertyType }}</td>
+                    <td>${{ p.rentPrice }}</td>
+                    <td>{{ p.beds }} / {{ p.baths }}</td>
+                    <td>{{ landlordName(p.landlord) }}</td>
+                    <td>
+                        <span class="status-badge" [class.status-archived]="p.isArchived" [class.status-active]="!p.isArchived">{{ p.isArchived ? 'Archived' : 'Active' }}</span>
+                    </td>
+                    <td class="actions">
+                        @if (!p.isArchived) {
+                            <button type="button" class="btn btn-small" (click)="editProperty(p)">Edit</button>
+                            <button type="button" class="btn btn-small btn-danger" (click)="archiveProperty(p)">Archive</button>
+                        } @else {
+                            <button type="button" class="btn btn-small" (click)="restoreProperty(p)">Restore</button>
+                        }
+                    </td>
+                </tr>
+            } @empty {
+                <tr><td colspan="7" class="empty">No properties yet.</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
+</section>

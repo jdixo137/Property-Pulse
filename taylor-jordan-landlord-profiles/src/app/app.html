@@ -1,8 +1,12 @@
 <header class="app-header">
   <h1>Property Pulse</h1>
-  <p>Landlord Profile Management</p>
+  <nav class="main-nav">
+    <a routerLink="/properties" routerLinkActive="active">Property Listings</a>
+    <a routerLink="/landlords" routerLinkActive="active">Landlord Profiles</a>
+    <!-- Reviews (Giovanni) link goes here once that component is added -->
+  </nav>
 </header>
 
 <main class="container">
-  <app-landlord-profile></app-landlord-profile>
+  <router-outlet />
 </main>
