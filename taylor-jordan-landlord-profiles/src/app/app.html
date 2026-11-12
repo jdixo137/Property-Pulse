@@ -8,5 +8,11 @@
 </header>
 
 <main class="container">
+  @if (hasPropertyDraft) {
+    <div class="draft-banner">
+      <span>Your property form is saved. Add the landlord below, then go back to finish it.</span>
+      <a routerLink="/properties" class="btn btn-primary">&larr; Back to Property</a>
+    </div>
+  }
   <router-outlet />
 </main>

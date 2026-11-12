@@ -37,6 +37,11 @@ export class PropertyService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8000/properties';
 
+  // Holds an unfinished Add/Edit Property form while the user visits
+  // Landlord Profiles to add a landlord. The service lives for the whole app,
+  // so the draft survives switching pages.
+  draft: { values: any; editingId: string | null; landlordIds: string[] } | null = null;
+
   getProperties(): Observable<Property[]> {
     return this.http.get<Property[]>(this.apiUrl);
   }

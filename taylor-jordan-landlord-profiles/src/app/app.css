@@ -2,3 +2,6 @@
 .main-nav a { color: #ffffff; text-decoration: none; font-weight: 700; padding: 8px 18px; border-radius: 999px; }
 .main-nav a:hover { background: rgba(255, 255, 255, 0.2); }
 .main-nav a.active { background: var(--color-surface); color: var(--color-plum); }
+
+.draft-banner { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; background: var(--color-blush); border: 2px solid var(--color-rose); border-radius: 16px; padding: 14px 20px; margin-bottom: 24px; color: var(--color-plum); font-weight: 700; }
+.draft-banner .btn { text-decoration: none; }

@@ -249,7 +249,7 @@
         }
         </select>
 
-        <a routerLink="/landlords" class="btn btn-secondary add-landlord">Add a Landlord</a>
+        <button type="button" class="btn btn-secondary add-landlord" (click)="addLandlord()">Add a Landlord</button>
 
         @if (landlord.invalid && (landlord.dirty || landlord.touched)) { 
             <div class="error">

@@ -1,11 +1,11 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { Property, PropertyService } from './property.service';
 import { Landlord, LandlordService } from '../landlord-profile/landlord.service';
 
 @Component({
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule],
   selector: 'app-property-listing',
   styleUrl: './property-listing.css',
   templateUrl: './property-listing.html',
@@ -14,6 +14,7 @@ export class PropertyListing implements OnInit {
 private propertyService = inject(PropertyService);
 private landlordService = inject(LandlordService);
 private cdr = inject(ChangeDetectorRef);
+private router = inject(Router);
 
 propertyForm = new FormGroup({
    address: new FormControl('', [Validators.required]),
@@ -86,8 +87,43 @@ showArchived = false;
 message = '';
 
 ngOnInit() {
+  this.restoreDraft();
   this.loadProperties();
   this.loadLandlords();
+}
+
+// "Add a Landlord": save what's typed so far, then open Landlord Profiles.
+addLandlord() {
+  this.propertyService.draft = {
+    values: this.propertyForm.getRawValue(),
+    editingId: this.editingId,
+    landlordIds: this.landlords.map(l => l._id!),
+  };
+  this.router.navigate(['/landlords']);
+}
+
+// Coming back from Landlord Profiles: put the unfinished form back.
+private landlordIdsBeforeDraft: string[] | null = null;
+
+private restoreDraft() {
+  const draft = this.propertyService.draft;
+  if (draft) {
+    this.propertyForm.setValue(draft.values);
+    this.editingId = draft.editingId;
+    this.landlordIdsBeforeDraft = draft.landlordIds;
+    this.message = 'Welcome back! Your property details were saved. Check the landlord and click Save.';
+    this.propertyService.draft = null;
+  }
+}
+
+// After the landlord list reloads, pre-select the landlord that was just added.
+private selectNewLandlord() {
+  if (!this.landlordIdsBeforeDraft) return;
+  const added = this.activeLandlords.filter(l => !this.landlordIdsBeforeDraft!.includes(l._id!));
+  if (added.length > 0 && !this.landlord.value) {
+    this.landlord.setValue(added[added.length - 1]._id!);
+  }
+  this.landlordIdsBeforeDraft = null;
 }
 
 // READ: get all properties from MongoDB
@@ -108,6 +144,7 @@ loadProperties() {
 loadLandlords() {
   this.landlordService.getLandlords().subscribe(data => {
     this.landlords = data;
+    this.selectNewLandlord();
     this.cdr.markForCheck();
   });
 }

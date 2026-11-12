@@ -12,7 +12,7 @@ form { max-width: 620px; }
 [formGroupName="amenities"] input { accent-color: var(--color-plum); margin: 0; }
 @media (max-width: 600px) { [formGroupName="amenities"] { grid-template-columns: 20px 1fr 20px 1fr; } }
 
-.add-landlord { align-self: flex-start; margin-top: 8px; text-decoration: none; }
+.add-landlord { align-self: flex-start; margin-top: 8px; }
 
 .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .list-header h2 { margin: 0; }
