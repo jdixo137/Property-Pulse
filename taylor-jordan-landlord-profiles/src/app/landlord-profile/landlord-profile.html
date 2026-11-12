@@ -48,10 +48,10 @@
                 </tr>
             </thead>
             <tbody>
-                @for (landlord of visibleLandlords; track landlord.landlordId) 
+                @for (landlord of visibleLandlords; track landlord._id) 
                 {
-                    <tr [ngClass]="{ 'archived-row': landlord.isArchived, 'editing-row': landlord.landlordId === editingId }">
-                        <td>{{landlord.landlordId}}</td>
+                    <tr [ngClass]="{ 'archived-row': landlord.isArchived, 'editing-row': landlord._id === editingId }">
+                        <td>{{landlord._id}}</td>
                         <td>{{landlord.landlordName}}</td>
                         <td>{{ landlord.email }}<br>{{ landlord.phone }}</td>
                         <td>{{ landlord.propertiesOwned }}</td>
