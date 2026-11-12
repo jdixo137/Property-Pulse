@@ -1,0 +1,32 @@
+/* Component-only styles. Shared theme (colors, cards, buttons, tables) is in src/styles.css. */
+form { max-width: 620px; }
+
+/* The shared .form-field styles inputs; selects need the same look here. */
+.form-field select { padding: 10px 12px; border: 2px solid var(--color-cream-dark); border-radius: 10px; font-size: 1rem; font-family: inherit; background: #ffffff; color: var(--color-text); max-width: 260px; }
+.form-field select:focus { outline: none; border-color: var(--color-mauve); }
+.form-field select.ng-invalid.ng-touched { border-color: var(--color-danger); }
+
+/* Amenities checkbox grid */
+[formGroupName="amenities"] { display: grid; grid-template-columns: 20px 1fr 20px 1fr 20px 1fr; gap: 10px 6px; align-items: center; }
+[formGroupName="amenities"] label { font-weight: 400; color: var(--color-text); margin: 0; }
+[formGroupName="amenities"] input { accent-color: var(--color-plum); margin: 0; }
+@media (max-width: 600px) { [formGroupName="amenities"] { grid-template-columns: 20px 1fr 20px 1fr; } }
+
+.add-landlord { align-self: flex-start; margin-top: 8px; }
+
+.list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.list-header h2 { margin: 0; }
+
+.table-wrapper { overflow-x: auto; }
+td { vertical-align: top; }
+.actions { white-space: nowrap; }
+.actions .btn { margin-right: 6px; }
+.capitalize { text-transform: capitalize; }
+.empty { text-align: center; font-style: italic; color: var(--color-muted); }
+
+.archived-row { opacity: 0.6; background: #f3ebe1; }
+.editing-row { background: #fbe9ec; }
+
+.status-badge { padding: 2px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
+.status-active { background: #e3f1e8; color: #2f7a5a; }
+.status-archived { background: #ece8e0; color: #6b6475; }

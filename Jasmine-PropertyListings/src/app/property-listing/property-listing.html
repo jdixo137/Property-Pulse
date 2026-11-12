@@ -1,5 +1,5 @@
 <!--Source: https://angular.dev/guide/forms/reactive-forms, -->
-<h2>Add Property </h2>
+<h2>{{ editingId === null ? 'Add Property' : 'Edit Property' }}</h2>
 <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
 
     <div>
@@ -108,11 +108,6 @@
                 @if (rentPrice.hasError('required')) {
                     <div> Rent price is required.</div>
                 }
-                </div>
-            }
-
-            @if (rentPrice.invalid && (rentPrice.dirty || rentPrice.touched)) { 
-            <div class= "alert alert-danger">
                 @if (rentPrice.hasError('min')) {
                     <div> Rent price must be greater than 100.</div>
                 }
@@ -266,6 +261,61 @@
 
     </div>
     
-      <button  type="submit">Save</button>
+      <div class="form-actions">
+        <button type="submit">{{ editingId === null ? 'Save' : 'Save Changes' }}</button>
+        @if (editingId !== null) {
+            <button type="button" class="btn-secondary" (click)="cancelEdit()">Cancel</button>
+        }
+      </div>
 
 </form>
+
+@if (message) {
+    <p class="message">{{ message }}</p>
+}
+
+<h2>Property Listings</h2>
+<div class="listings">
+    <label class="show-archived">
+        <input type="checkbox" [checked]="showArchived" (change)="showArchived = !showArchived">
+        Show Archived
+    </label>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Address</th>
+                <th>Type</th>
+                <th>Rent</th>
+                <th>Beds / Baths</th>
+                <th>Landlord</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (p of visibleProperties; track p.id) {
+                <tr [class.archived-row]="p.isArchived" [class.editing-row]="p.id === editingId">
+                    <td>{{ p.id }}</td>
+                    <td>{{ p.address }}<br>{{ p.city }}, {{ p.state }} {{ p.zip }}</td>
+                    <td class="capitalize">{{ p.propertyType }}</td>
+                    <td>\${{ p.rentPrice }}</td>
+                    <td>{{ p.beds }} / {{ p.baths }}</td>
+                    <td>{{ landlordNames[p.landlord ?? ''] }}</td>
+                    <td>{{ p.isArchived ? 'Archived' : 'Active' }}</td>
+                    <td class="actions">
+                        @if (!p.isArchived) {
+                            <button type="button" (click)="editProperty(p)">Edit</button>
+                            <button type="button" class="btn-danger" (click)="archiveProperty(p)">Archive</button>
+                        } @else {
+                            <button type="button" (click)="restoreProperty(p)">Restore</button>
+                        }
+                    </td>
+                </tr>
+            } @empty {
+                <tr><td colspan="8" class="empty">No properties yet.</td></tr>
+            }
+        </tbody>
+    </table>
+</div>

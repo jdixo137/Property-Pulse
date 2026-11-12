@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap');
+
+:root {
+  /* Kennesaw State University black and gold.
+     Variable names are kept from the shared theme so every rule still works. */
+  --color-gold: #FFC629;
+  --color-cream: #f4f4f4;       /* page background */
+  --color-cream-dark: #d4d4d4;  /* input borders */
+  --color-surface: #ffffff;     /* cards */
+  --color-blush: #fff1c7;       /* light gold: card borders, table headers, secondary buttons */
+  --color-rose: #ffd75e;        /* hover gold */
+  --color-mauve: #0B1315;       /* header background, focus */
+  --color-plum: #0B1315;        /* headings, labels, primary buttons */
+  --color-plum-dark: #000000;
+  --color-text: #0B1315;
+  --color-muted: #6b6b6b;
+  --color-success: #2f7a5a;
+  --color-danger: #c8102e;
+}
+
+body {
+  margin: 0;
+  font-family: 'Nunito', 'Segoe UI', Helvetica, Arial, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-text);
+}
+
+h1, h2, .btn, th {
+  font-family: 'Montserrat', 'Nunito', sans-serif;
+}
+
+.app-header { background: var(--color-mauve); border-bottom: 6px solid var(--color-gold); padding: 28px 24px; text-align: center; }
+.app-header h1 { margin: 0; color: var(--color-gold); font-size: 2.2rem; letter-spacing: 0.5px; }
+.app-header p { margin: 4px 0 0; color: #ffffff; font-weight: 600; }
+.container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+
+.card { background: var(--color-surface); border: 2px solid var(--color-blush); border-radius: 16px; padding: 24px; margin-bottom: 24px; }
+.card h2 { margin-top: 0; color: var(--color-plum); font-size: 1.5rem; }
+
+.form-field { display: flex; flex-direction: column; margin-bottom: 16px; }
+.form-field label { font-weight: 700; margin-bottom: 4px; color: var(--color-plum); }
+.form-field input { padding: 10px 12px; border: 2px solid var(--color-cream-dark); border-radius: 10px; font-size: 1rem; font-family: inherit; background: #ffffff; color: var(--color-text); }
+.form-field input:focus { outline: none; border-color: var(--color-mauve); }
+.form-field .ng-invalid.ng-touched { border-color: var(--color-danger); }
+
+.error { color: var(--color-danger); font-size: 0.875rem; margin: 4px 0 0; }
+.success { color: var(--color-success); font-weight: 700; }
+.form-actions { display: flex; gap: 8px; }
+
+.btn { padding: 10px 20px; border: none; border-radius: 999px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+.btn-primary { background: var(--color-plum); color: var(--color-gold); }
+.btn-primary:hover { background: var(--color-plum-dark); }
+.btn-secondary { background: var(--color-blush); color: var(--color-plum); }
+.btn-secondary:hover { background: var(--color-rose); }
+.btn-small { padding: 6px 14px; font-size: 0.875rem; background: var(--color-blush); color: var(--color-plum); }
+.btn-danger { background: var(--color-danger); color: #ffffff; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--color-blush); }
+th { background: var(--color-plum); color: var(--color-gold); font-size: 0.85rem; font-weight: 600; }
