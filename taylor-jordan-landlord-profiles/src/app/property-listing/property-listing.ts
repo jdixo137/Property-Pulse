@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Property, PropertyService } from './property.service';
+import { Amenities, Property, PropertyService } from './property.service';
 import { Landlord, LandlordService } from '../landlord-profile/landlord.service';
 
 @Component({
@@ -211,6 +211,8 @@ onSubmit(){
   const property: Partial<Property> = {
     ...formValue,
     rentPrice: Number(formValue.rentPrice),
+    // Unchecked boxes come back as null after a form reset; store them as false.
+    amenities: Object.fromEntries(Object.entries(formValue.amenities).map(([k, v]) => [k, !!v])) as unknown as Amenities,
     beds: Number(formValue.beds),
     baths: Number(formValue.baths),
   } as Partial<Property>;
