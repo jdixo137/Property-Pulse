@@ -1,8 +1,8 @@
 :host {
   display: block;
   min-height: 100vh;
-  background: #f4f7fb;
-  color: #1f2937;
+  background: #f7f3f1;
+  color: #3d3440;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -22,7 +22,7 @@
 
 .eyebrow {
   margin: 0 0 8px;
-  color: #2563eb;
+  color: #b76e79;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 2px;
@@ -31,13 +31,13 @@
 .page-header h1 {
   margin: 0;
   font-size: 34px;
-  color: #172554;
+  color: #49364b;
 }
 
 .subtitle {
   max-width: 650px;
   margin-top: 12px;
-  color: #64748b;
+  color: #827783;
   line-height: 1.6;
 }
 
@@ -46,22 +46,22 @@
 .empty-state {
   padding: 28px;
   background: #ffffff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #eadfe4;
   border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 4px 16px rgba(73, 54, 75, 0.06);
 }
 
 .section-heading h2,
 .reviews-heading h2 {
   margin: 0;
-  color: #172554;
+  color: #49364b;
   font-size: 23px;
 }
 
 .section-heading p,
 .reviews-heading p {
   margin: 8px 0 24px;
-  color: #64748b;
+  color: #827783;
 }
 
 .form-grid,
@@ -81,7 +81,7 @@
 .form-group label {
   font-size: 14px;
   font-weight: 600;
-  color: #334155;
+  color: #514650;
 }
 
 .form-group input,
@@ -89,18 +89,18 @@
 .form-group textarea {
   width: 100%;
   padding: 12px 14px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #d8c6ce;
   border-radius: 8px;
   background: #ffffff;
-  color: #1f2937;
+  color: #3d3440;
   font: inherit;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  outline: 2px solid #93c5fd;
-  border-color: #2563eb;
+  outline: 2px solid #d9aab5;
+  border-color: #b76e79;
 }
 
 .form-group textarea {
@@ -110,16 +110,16 @@
 
 .rating-title {
   margin: 12px 0 20px;
-  color: #172554;
+  color: #49364b;
 }
 
 .helper-text {
-  color: #64748b;
+  color: #827783;
   font-size: 12px;
 }
 
 .error {
-  color: #dc2626;
+  color: #b44858;
   font-size: 12px;
 }
 
@@ -137,34 +137,38 @@ button {
   font: inherit;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
 }
 
 .primary-button {
-  background: #2563eb;
+  background: #b76e79;
   color: #ffffff;
 }
 
 .primary-button:hover {
-  background: #1d4ed8;
+  background: #985565;
 }
 
 .secondary-button {
-  background: #e2e8f0;
-  color: #1e293b;
+  background: #f3e3e8;
+  color: #493b45;
 }
 
 .secondary-button:hover {
-  background: #cbd5e1;
+  background: #ead2da;
 }
 
 .delete-button {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: #f7e6e8;
+  color: #9b4654;
 }
 
 .delete-button:hover {
-  background: #fecaca;
+  background: #efd0d5;
 }
 
 .reviews-section {
@@ -186,8 +190,8 @@ button {
 .review-count {
   padding: 8px 12px;
   border-radius: 20px;
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: #f3e3e8;
+  color: #985565;
   font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
@@ -200,11 +204,11 @@ button {
 
 .empty-state h3 {
   margin-top: 0;
-  color: #172554;
+  color: #49364b;
 }
 
 .empty-state p {
-  color: #64748b;
+  color: #827783;
 }
 
 .review-card {
@@ -220,19 +224,19 @@ button {
 
 .review-card-header h3 {
   margin: 0;
-  color: #172554;
+  color: #49364b;
 }
 
 .review-card-header p {
   margin-bottom: 0;
-  color: #64748b;
+  color: #827783;
   font-size: 13px;
 }
 
 .overall-rating {
   padding: 8px 12px;
-  background: #fef3c7;
-  color: #92400e;
+  background: #f5e8d9;
+  color: #79515b;
   border-radius: 8px;
   font-weight: 700;
   white-space: nowrap;
@@ -240,13 +244,14 @@ button {
 
 .review-date {
   margin: 18px 0 8px;
-  color: #64748b;
+  color: #827783;
   font-size: 12px;
 }
 
 .review-content {
   line-height: 1.7;
   overflow-wrap: anywhere;
+  color: #514650;
 }
 
 .review-ratings {
@@ -258,22 +263,22 @@ button {
 
 .review-ratings span {
   padding: 7px 10px;
-  background: #f1f5f9;
-  color: #475569;
+  background: #f5eef1;
+  color: #695d68;
   border-radius: 6px;
   font-size: 12px;
 }
 
 .review-actions {
   justify-content: flex-end;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid #eadfe4;
   padding-top: 18px;
 }
 
 .page-footer {
   margin-top: 40px;
   text-align: center;
-  color: #64748b;
+  color: #827783;
   font-size: 12px;
 }
 

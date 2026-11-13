@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -6,9 +6,10 @@ import {
   ReactiveFormsModule
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ReviewService } from '../services/review.service';
 
 interface Review {
-  id: number;
+  id: string;
   propertyId: string;
   username: string;
   overallRating: number;
@@ -28,30 +29,57 @@ interface Review {
   templateUrl: './review-management.html',
   styleUrl: './review-management.css'
 })
-export class ReviewManagement {
+
+export class ReviewManagement implements OnInit {
+
   reviewForm: FormGroup;
 
   reviews: Review[] = [];
 
-  editingReviewId: number | null = null;
+  editingReviewId: string | null = null;
 
-  nextReviewId = 1;
-
-  constructor(private fb: FormBuilder) {
+  constructor(
+  private fb: FormBuilder,
+  private reviewService: ReviewService,
+  private cdr: ChangeDetectorRef
+) {
     this.reviewForm = this.fb.group({
       propertyId: ['', Validators.required],
       username: ['', Validators.required],
-      overallRating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
-      maintenanceRating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
-      communicationRating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
-      conditionRating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
-      valueRating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
-      moveRating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
+      overallRating: [5, Validators.required],
+      maintenanceRating: [5, Validators.required],
+      communicationRating: [5, Validators.required],
+      conditionRating: [5, Validators.required],
+      valueRating: [5, Validators.required],
+      moveRating: [5, Validators.required],
       reviewText: ['', [Validators.required, Validators.minLength(10)]]
     });
   }
 
+  ngOnInit(): void {
+    this.loadReviews();
+  }
+
+  // READ
+  loadReviews(): void {
+  this.reviewService.getReviews().subscribe({
+    next: (data: any[]) => {
+      this.reviews = data.map(review => ({
+        ...review,
+        id: review._id
+      }));
+
+      this.cdr.markForCheck();
+    },
+    error: (error) => {
+      console.error('Error loading reviews:', error);
+    }
+  });
+}
+
+  // CREATE AND UPDATE
   submitReview(): void {
+
     if (this.reviewForm.invalid) {
       this.reviewForm.markAllAsTouched();
       return;
@@ -60,40 +88,38 @@ export class ReviewManagement {
     const formValue = this.reviewForm.getRawValue();
 
     if (this.editingReviewId !== null) {
-      this.reviews = this.reviews.map(review =>
-        review.id === this.editingReviewId
-          ? {
-              ...review,
-              ...formValue
-            }
-          : review
-      );
 
-      this.editingReviewId = null;
+      this.reviewService.updateReview(
+        this.editingReviewId,
+        formValue
+      ).subscribe({
+        next: () => {
+          this.loadReviews();
+          this.resetForm();
+        },
+        error: (error) => {
+          console.error('Error updating review:', error);
+        }
+      });
+
     } else {
-      const newReview: Review = {
-        id: this.nextReviewId++,
-        ...formValue,
-        submissionDate: new Date().toLocaleDateString()
-      };
 
-      this.reviews = [...this.reviews, newReview];
+      this.reviewService.addReview(formValue).subscribe({
+        next: () => {
+          this.loadReviews();
+          this.resetForm();
+        },
+        error: (error) => {
+          console.error('Error submitting review:', error);
+        }
+      });
+
     }
-
-    this.reviewForm.reset({
-      propertyId: '',
-      username: '',
-      overallRating: 5,
-      maintenanceRating: 5,
-      communicationRating: 5,
-      conditionRating: 5,
-      valueRating: 5,
-      moveRating: 5,
-      reviewText: ''
-    });
   }
 
+  // EDIT
   editReview(review: Review): void {
+
     this.editingReviewId = review.id;
 
     this.reviewForm.patchValue({
@@ -111,15 +137,30 @@ export class ReviewManagement {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  deleteReview(id: number): void {
-    this.reviews = this.reviews.filter(review => review.id !== id);
+  // DELETE
+  deleteReview(id: string): void {
 
-    if (this.editingReviewId === id) {
-      this.cancelEdit();
+    if (!confirm('Are you sure you want to delete this review?')) {
+      return;
     }
+
+    this.reviewService.deleteReview(id).subscribe({
+      next: () => {
+        this.loadReviews();
+
+        if (this.editingReviewId === id) {
+          this.resetForm();
+        }
+      },
+      error: (error) => {
+        console.error('Error deleting review:', error);
+      }
+    });
   }
 
-  cancelEdit(): void {
+  // RESET FORM
+  resetForm(): void {
+
     this.editingReviewId = null;
 
     this.reviewForm.reset({
@@ -133,5 +174,9 @@ export class ReviewManagement {
       moveRating: 5,
       reviewText: ''
     });
+  }
+
+  cancelEdit(): void {
+    this.resetForm();
   }
 }
