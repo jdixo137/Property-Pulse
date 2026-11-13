@@ -3,7 +3,6 @@
 <div class="list-header">
     <h2>Find a Property</h2>
     <div class="form-actions">
-        <button type="button" class="btn btn-primary" (click)="openAddForm()">+ Add Property</button>
         <button type="button" class="btn btn-secondary" (click)="showArchived = !showArchived">
             {{ showArchived ? 'Hide Archived' : 'Show Archived' }}
         </button>
@@ -53,7 +52,7 @@
                 <tr><td colspan="7" class="empty">
                     @if (searchText.trim()) {
                         No properties found for "{{ searchText }}".
-                        <button type="button" class="btn btn-small" (click)="addFromSearch()">Add this property</button>
+                        <button type="button" class="btn btn-primary" (click)="addFromSearch()">+ Add this property</button>
                     } @else {
                         No properties yet.
                     }
