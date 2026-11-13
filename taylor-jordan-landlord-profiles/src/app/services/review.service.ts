@@ -7,14 +7,18 @@ import { Observable } from 'rxjs';
 })
 export class ReviewService {
 
-  // Integrated backend (one Express server for all components)
   private apiUrl = 'http://localhost:8000/reviews';
 
   constructor(private http: HttpClient) {}
 
-  getReviews(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
-  }
+  getReviews(propertyId?: string | null): Observable<any[]> {
+
+  const url = propertyId
+    ? `${this.apiUrl}?property=${encodeURIComponent(propertyId)}`
+    : this.apiUrl;
+
+  return this.http.get<any[]>(url);
+}
 
   addReview(review: any): Observable<any> {
     return this.http.post(this.apiUrl, review);

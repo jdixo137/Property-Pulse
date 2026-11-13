@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -6,7 +7,6 @@ import {
   ReactiveFormsModule
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ReviewService } from '../services/review.service';
 
 interface Review {
@@ -36,11 +36,9 @@ export class ReviewManagement implements OnInit {
   reviewForm: FormGroup;
 
   reviews: Review[] = [];
+  propertyId: string | null = null;
 
   editingReviewId: string | null = null;
-
-  // Set when the user came from a property's "Write a Review" button
-  returnToProperty: string | null = null;
 
   constructor(
   private fb: FormBuilder,
@@ -63,20 +61,26 @@ export class ReviewManagement implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadReviews();
+  this.route.queryParamMap.subscribe(params => {
 
-    // Integration: "Write a Review" on Property Details opens /reviews?property=<id>
-    const propertyId = this.route.snapshot.queryParamMap.get('property');
-    if (propertyId) {
-      this.reviewForm.patchValue({ propertyId });
-      this.returnToProperty = propertyId;
+    this.propertyId = params.get('property');
+
+    if (this.propertyId) {
+      this.reviewForm.patchValue({
+        propertyId: this.propertyId
+      });
     }
-  }
+
+    this.loadReviews(this.propertyId);
+  });
+}
 
   // READ
-  loadReviews(): void {
-  this.reviewService.getReviews().subscribe({
+  loadReviews(propertyId?: string | null): void {
+
+  this.reviewService.getReviews(propertyId).subscribe({
     next: (data: any[]) => {
+
       this.reviews = data.map(review => ({
         ...review,
         id: review._id
@@ -98,7 +102,10 @@ export class ReviewManagement implements OnInit {
       return;
     }
 
-    const formValue = this.reviewForm.getRawValue();
+    const formValue = {
+  ...this.reviewForm.getRawValue(),
+  propertyId: this.propertyId ?? this.reviewForm.getRawValue().propertyId
+};
 
     if (this.editingReviewId !== null) {
 
@@ -107,7 +114,7 @@ export class ReviewManagement implements OnInit {
         formValue
       ).subscribe({
         next: () => {
-          this.loadReviews();
+          this.loadReviews(this.propertyId);
           this.resetForm();
         },
         error: (error) => {
@@ -118,15 +125,15 @@ export class ReviewManagement implements OnInit {
     } else {
 
       this.reviewService.addReview(formValue).subscribe({
-        next: () => {
-          // Integration: go back to the property so the new review shows there
-          if (this.returnToProperty) {
-            this.router.navigate(['/properties', this.returnToProperty]);
-            return;
-          }
-          this.loadReviews();
-          this.resetForm();
-        },
+  next: () => {
+    // Integration: go back to the property so the new review shows there
+    if (this.propertyId) {
+      this.router.navigate(['/properties', this.propertyId]);
+      return;
+    }
+    this.loadReviews(this.propertyId);
+    this.resetForm();
+  },
         error: (error) => {
           console.error('Error submitting review:', error);
         }
@@ -164,12 +171,9 @@ export class ReviewManagement implements OnInit {
 
     this.reviewService.deleteReview(id).subscribe({
       next: () => {
-        this.loadReviews();
-
-        if (this.editingReviewId === id) {
-          this.resetForm();
-        }
-      },
+  this.loadReviews(this.propertyId);
+  this.resetForm();
+},
       error: (error) => {
         console.error('Error deleting review:', error);
       }
@@ -182,7 +186,7 @@ export class ReviewManagement implements OnInit {
     this.editingReviewId = null;
 
     this.reviewForm.reset({
-      propertyId: '',
+      propertyId: this.propertyId ?? '',
       username: '',
       overallRating: 5,
       maintenanceRating: 5,

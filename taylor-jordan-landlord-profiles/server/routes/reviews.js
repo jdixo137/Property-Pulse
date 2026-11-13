@@ -5,7 +5,11 @@ const Review = require('../models/review');
 // READ
 router.get('/', async (req, res) => {
   try {
-    const reviews = await Review.find();
+    const filter = req.query.property
+      ? { propertyId: req.query.property }
+      : {};
+
+    const reviews = await Review.find(filter);
     res.json(reviews);
   } catch (err) {
     res.status(500).json({ message: err.message });

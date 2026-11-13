@@ -70,8 +70,8 @@ export class PropertyDetails implements OnInit {
 
   // Reviews for this property (Giovanni's Review Management data)
   private loadReviews(id: string) {
-    this.reviewService.getReviews().subscribe(list => {
-      this.reviews = list.filter(r => r.propertyId === id);
+    this.reviewService.getReviews(id).subscribe(list => {
+      this.reviews = list;
       this.cdr.markForCheck();
     });
   }
