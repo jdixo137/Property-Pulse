@@ -1,0 +1,226 @@
+<div class="page-container">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">PROPERTY PULSE</p>
+      <h1>Review Management</h1>
+      <p class="subtitle">
+        Share your rental experience and help others make informed housing decisions.
+      </p>
+    </div>
+  </header>
+
+  <section class="form-card">
+    <div class="section-heading">
+      <h2>{{ editingReviewId !== null ? 'Edit Your Review' : 'Write a Review' }}</h2>
+      <p>Rate your experience with this rental property.</p>
+    </div>
+
+    <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="propertyId">Property ID</label>
+          <input
+            id="propertyId"
+            type="text"
+            formControlName="propertyId"
+            placeholder="e.g., PROP-001"
+          />
+
+          <small class="error"
+            *ngIf="reviewForm.get('propertyId')?.touched &&
+                   reviewForm.get('propertyId')?.invalid">
+            Property ID is required.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            formControlName="username"
+            placeholder="Enter your username"
+          />
+
+          <small class="error"
+            *ngIf="reviewForm.get('username')?.touched &&
+                   reviewForm.get('username')?.invalid">
+            Username is required.
+          </small>
+        </div>
+      </div>
+
+      <h3 class="rating-title">Rate Your Experience</h3>
+
+      <div class="rating-grid">
+        <div class="form-group">
+          <label for="overallRating">Overall Rating</label>
+          <select id="overallRating" formControlName="overallRating">
+            <option [ngValue]="5">5 - Excellent</option>
+            <option [ngValue]="4">4 - Very Good</option>
+            <option [ngValue]="3">3 - Average</option>
+            <option [ngValue]="2">2 - Poor</option>
+            <option [ngValue]="1">1 - Very Poor</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="maintenanceRating">Maintenance</label>
+          <select id="maintenanceRating" formControlName="maintenanceRating">
+            <option [ngValue]="5">5 - Excellent</option>
+            <option [ngValue]="4">4 - Very Good</option>
+            <option [ngValue]="3">3 - Average</option>
+            <option [ngValue]="2">2 - Poor</option>
+            <option [ngValue]="1">1 - Very Poor</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="communicationRating">Communication</label>
+          <select id="communicationRating" formControlName="communicationRating">
+            <option [ngValue]="5">5 - Excellent</option>
+            <option [ngValue]="4">4 - Very Good</option>
+            <option [ngValue]="3">3 - Average</option>
+            <option [ngValue]="2">2 - Poor</option>
+            <option [ngValue]="1">1 - Very Poor</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="conditionRating">Property Condition</label>
+          <select id="conditionRating" formControlName="conditionRating">
+            <option [ngValue]="5">5 - Excellent</option>
+            <option [ngValue]="4">4 - Very Good</option>
+            <option [ngValue]="3">3 - Average</option>
+            <option [ngValue]="2">2 - Poor</option>
+            <option [ngValue]="1">1 - Very Poor</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="valueRating">Value for Rent</label>
+          <select id="valueRating" formControlName="valueRating">
+            <option [ngValue]="5">5 - Excellent</option>
+            <option [ngValue]="4">4 - Very Good</option>
+            <option [ngValue]="3">3 - Average</option>
+            <option [ngValue]="2">2 - Poor</option>
+            <option [ngValue]="1">1 - Very Poor</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="moveRating">Move-in/Move-out Experience</label>
+          <select id="moveRating" formControlName="moveRating">
+            <option [ngValue]="5">5 - Excellent</option>
+            <option [ngValue]="4">4 - Very Good</option>
+            <option [ngValue]="3">3 - Average</option>
+            <option [ngValue]="2">2 - Poor</option>
+            <option [ngValue]="1">1 - Very Poor</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group review-text-group">
+        <label for="reviewText">Written Review</label>
+        <textarea
+          id="reviewText"
+          formControlName="reviewText"
+          rows="5"
+          placeholder="Describe your experience with this property..."
+        ></textarea>
+
+        <small class="helper-text">
+          Please provide at least 10 characters.
+        </small>
+
+        <small class="error"
+          *ngIf="reviewForm.get('reviewText')?.touched &&
+                 reviewForm.get('reviewText')?.invalid">
+          Your review must contain at least 10 characters.
+        </small>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="primary-button">
+          {{ editingReviewId !== null ? 'Save Changes' : 'Submit Review' }}
+        </button>
+
+        <button
+          *ngIf="editingReviewId !== null"
+          type="button"
+          class="secondary-button"
+          (click)="cancelEdit()"
+        >
+          Cancel
+        </button>
+      </div>
+
+    </form>
+  </section>
+
+  <section class="reviews-section">
+    <div class="reviews-heading">
+      <div>
+        <h2>Submitted Reviews</h2>
+        <p>Review experiences shared by renters.</p>
+      </div>
+
+      <span class="review-count">
+        {{ reviews.length }} {{ reviews.length === 1 ? 'Review' : 'Reviews' }}
+      </span>
+    </div>
+
+    <div *ngIf="reviews.length === 0" class="empty-state">
+      <h3>No reviews yet</h3>
+      <p>Be the first to share your rental experience.</p>
+    </div>
+
+    <article class="review-card" *ngFor="let review of reviews">
+      <div class="review-card-header">
+        <div>
+          <h3>{{ review.username }}</h3>
+          <p>Property ID: {{ review.propertyId }}</p>
+        </div>
+
+        <span class="overall-rating">
+          {{ review.overallRating }}/5
+        </span>
+      </div>
+
+      <p class="review-date">Submitted: {{ review.submissionDate }}</p>
+
+      <p class="review-content">{{ review.reviewText }}</p>
+
+      <div class="review-ratings">
+        <span>Maintenance: {{ review.maintenanceRating }}/5</span>
+        <span>Communication: {{ review.communicationRating }}/5</span>
+        <span>Condition: {{ review.conditionRating }}/5</span>
+        <span>Value: {{ review.valueRating }}/5</span>
+        <span>Move-in/out: {{ review.moveRating }}/5</span>
+      </div>
+
+      <div class="review-actions">
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="editReview(review)"
+        >
+          Edit
+        </button>
+
+        <button
+          type="button"
+          class="delete-button"
+          (click)="deleteReview(review.id)"
+        >
+          Delete
+        </button>
+      </div>
+    </article>
+  </section>
+
+  <footer class="page-footer">
+    <p>Property Pulse | Helping renters make informed decisions.</p>
+  </footer>
+</div>

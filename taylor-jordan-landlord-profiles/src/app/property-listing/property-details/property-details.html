@@ -18,7 +18,13 @@
         <div><span class="label">Bedrooms</span><span class="value">{{ property.beds }}</span></div>
         <div><span class="label">Bathrooms</span><span class="value">{{ property.baths }}</span></div>
         <div><span class="label">Landlord</span><span class="value">{{ landlord?.landlordName ?? 'Unknown' }}</span></div>
-        <div><span class="label">Ratings</span><span class="value muted">No reviews yet</span></div>
+        <div><span class="label">Rating</span>
+            @if (reviews.length) {
+                <span class="value">{{ averageRating }} / 5 <span class="count">({{ reviews.length }} {{ reviews.length === 1 ? 'review' : 'reviews' }})</span></span>
+            } @else {
+                <span class="value muted">No reviews yet</span>
+            }
+        </div>
     </div>
 
     <h3>Amenities</h3>
@@ -42,6 +48,22 @@
     </div>
 
     @if (message) { <p class="success">{{ message }}</p> }
+</section>
+
+<section class="card">
+    <h3>Reviews</h3>
+    @for (r of reviews; track r._id) {
+        <div class="review">
+            <div class="review-header">
+                <strong>{{ r.username }}</strong>
+                <span class="stars">{{ r.overallRating }} / 5</span>
+                <span class="muted">{{ r.submissionDate }}</span>
+            </div>
+            <p>{{ r.reviewText }}</p>
+        </div>
+    } @empty {
+        <p class="muted">No reviews yet. Be the first to write one.</p>
+    }
 </section>
 } @else if (message) {
     <section class="card"><p class="error">{{ message }}</p></section>

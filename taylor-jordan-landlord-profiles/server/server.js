@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const landlordRoutes = require('./routes/landlords');
 const propertyRoutes = require('./routes/properties');
+const reviewRoutes = require('./routes/reviews');
 
 const app = express();
 app.use(cors());
@@ -14,5 +15,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/PropertyPulse')
 
 app.use('/landlords', landlordRoutes);
 app.use('/properties', propertyRoutes);
+app.use('/reviews', reviewRoutes);
 
 app.listen(8000, () => console.log('Server running on http://localhost:8000'));

@@ -2,6 +2,7 @@ import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Amenities, Property, PropertyService } from '../property.service';
 import { Landlord, LandlordService } from '../../landlord-profile/landlord.service';
+import { ReviewService } from '../../services/review.service';
 
 // Property Details [R] from the user flow: shows one listing and the actions
 // Edit, Archive, View Landlord and Write a Review.
@@ -16,9 +17,11 @@ export class PropertyDetails implements OnInit {
   private router = inject(Router);
   private propertyService = inject(PropertyService);
   private landlordService = inject(LandlordService);
+  private reviewService = inject(ReviewService);
   private cdr = inject(ChangeDetectorRef);
 
   property: Property | null = null;
+  reviews: any[] = []; // reviews whose propertyId matches this property
   landlord: Landlord | null = null;
   message = '';
 
@@ -48,6 +51,7 @@ export class PropertyDetails implements OnInit {
       next: property => {
         this.property = property;
         this.loadLandlord(property.landlord);
+        this.loadReviews(property._id!);
         this.cdr.markForCheck();
       },
       error: () => {
@@ -62,6 +66,21 @@ export class PropertyDetails implements OnInit {
       this.landlord = list.find(l => l._id === id) ?? null;
       this.cdr.markForCheck();
     });
+  }
+
+  // Reviews for this property (Giovanni's Review Management data)
+  private loadReviews(id: string) {
+    this.reviewService.getReviews().subscribe(list => {
+      this.reviews = list.filter(r => r.propertyId === id);
+      this.cdr.markForCheck();
+    });
+  }
+
+  // Average overall rating, rounded to one decimal (e.g. 4.5)
+  get averageRating(): number {
+    if (!this.reviews.length) return 0;
+    const total = this.reviews.reduce((sum, r) => sum + Number(r.overallRating), 0);
+    return Math.round((total / this.reviews.length) * 10) / 10;
   }
 
   editProperty() {
