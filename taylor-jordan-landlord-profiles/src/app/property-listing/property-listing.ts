@@ -1,11 +1,11 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Property, PropertyService } from './property.service';
 import { Landlord, LandlordService } from '../landlord-profile/landlord.service';
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-property-listing',
   styleUrl: './property-listing.css',
   templateUrl: './property-listing.html',
@@ -15,6 +15,7 @@ private propertyService = inject(PropertyService);
 private landlordService = inject(LandlordService);
 private cdr = inject(ChangeDetectorRef);
 private router = inject(Router);
+private route = inject(ActivatedRoute);
 
 propertyForm = new FormGroup({
    address: new FormControl('', [Validators.required]),
@@ -86,6 +87,23 @@ editingId: string | null = null;
 showArchived = false;
 message = '';
 
+// Property Search [R]: text typed in the search box
+searchText = '';
+
+// The Add/Edit form only opens when needed (no search results, Add Property, or Edit),
+// so the page starts with the address search like the user flow.
+showForm = false;
+
+private scrollToForm() {
+  setTimeout(() => document.getElementById('property-form')?.scrollIntoView({ behavior: 'smooth' }));
+}
+
+openAddForm() {
+  this.cancelEdit();
+  this.showForm = true;
+  this.scrollToForm();
+}
+
 ngOnInit() {
   this.restoreDraft();
   this.loadProperties();
@@ -110,6 +128,7 @@ private restoreDraft() {
   if (draft) {
     this.propertyForm.setValue(draft.values);
     this.editingId = draft.editingId;
+    this.showForm = true;
     this.landlordIdsBeforeDraft = draft.landlordIds;
     this.message = 'Welcome back! Your property details were saved. Check the landlord and click Save.';
     this.propertyService.draft = null;
@@ -131,6 +150,7 @@ loadProperties() {
   this.propertyService.getProperties().subscribe({
     next: data => {
       this.properties = data;
+      this.openEditFromDetails();
       this.cdr.markForCheck();
     },
     error: () => {
@@ -157,8 +177,23 @@ landlordName(id: string): string {
   return this.landlords.find(l => l._id === id)?.landlordName ?? 'Unknown';
 }
 
+// Read + Property Search: hide archived (unless Show Archived) and match the search text
+// against the address, city, state or zip.
 get visibleProperties(): Property[] {
-  return this.properties.filter(p => this.showArchived || !p.isArchived);
+  const search = this.searchText.trim().toLowerCase();
+  return this.properties.filter(p =>
+    (this.showArchived || !p.isArchived) &&
+    (!search || [p.address, p.city, p.state, p.zip].join(' ').toLowerCase().includes(search))
+  );
+}
+
+// "No properties found": start a new listing with the searched address filled in.
+addFromSearch() {
+  this.cancelEdit();
+  this.showForm = true;
+  this.propertyForm.patchValue({ address: this.searchText.trim() });
+  this.searchText = '';
+  this.scrollToForm();
 }
 
 // CREATE and UPDATE share one Save button.
@@ -196,7 +231,18 @@ onSubmit(){
   }
 
   this.editingId = null;
+  this.showForm = false;
   this.propertyForm.reset();
+}
+
+// Edit button on the Property Details page opens /properties?edit=<id>
+private openEditFromDetails() {
+  const id = this.route.snapshot.queryParamMap.get('edit');
+  const property = this.properties.find(p => p._id === id);
+  if (property) {
+    this.editProperty(property);
+    this.router.navigate([], { queryParams: {}, replaceUrl: true });
+  }
 }
 
 // Edit: load the selected property into the form.
@@ -216,10 +262,13 @@ editProperty(property: Property) {
     landlord: property.landlord,
   });
   this.message = '';
+  this.showForm = true;
+  this.scrollToForm();
 }
 
 cancelEdit() {
   this.editingId = null;
+  this.showForm = false;
   this.propertyForm.reset();
   this.message = '';
 }

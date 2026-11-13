@@ -1,0 +1,48 @@
+<a routerLink="/properties" class="back-link">&larr; Back to Property Listings</a>
+
+@if (property) {
+<section class="card">
+    <div class="details-header">
+        <div>
+            <h2>{{ property.address }}</h2>
+            <p class="location">{{ property.city }}, {{ property.state }} {{ property.zip }}</p>
+        </div>
+        <span class="status-badge" [class.status-archived]="property.isArchived" [class.status-active]="!property.isArchived">
+            {{ property.isArchived ? 'Archived' : 'Active' }}
+        </span>
+    </div>
+
+    <div class="details-grid">
+        <div><span class="label">Rent</span><span class="value">${{ property.rentPrice }}/mo</span></div>
+        <div><span class="label">Type</span><span class="value capitalize">{{ property.propertyType }}</span></div>
+        <div><span class="label">Bedrooms</span><span class="value">{{ property.beds }}</span></div>
+        <div><span class="label">Bathrooms</span><span class="value">{{ property.baths }}</span></div>
+        <div><span class="label">Landlord</span><span class="value">{{ landlord?.landlordName ?? 'Unknown' }}</span></div>
+        <div><span class="label">Ratings</span><span class="value muted">No reviews yet</span></div>
+    </div>
+
+    <h3>Amenities</h3>
+    @if (amenities.length) {
+        <ul class="amenities">
+            @for (a of amenities; track a) { <li>{{ a }}</li> }
+        </ul>
+    } @else {
+        <p class="muted">No amenities listed.</p>
+    }
+
+    <div class="form-actions details-actions">
+        @if (!property.isArchived) {
+            <button type="button" class="btn btn-primary" (click)="editProperty()">Edit</button>
+            <a [routerLink]="['/reviews']" [queryParams]="{ property: property._id }" class="btn btn-primary">Write a Review</a>
+            <a routerLink="/landlords" class="btn btn-secondary">View Landlord</a>
+            <button type="button" class="btn btn-danger" (click)="archiveProperty()">Archive</button>
+        } @else {
+            <button type="button" class="btn btn-secondary" (click)="restoreProperty()">Restore</button>
+        }
+    </div>
+
+    @if (message) { <p class="success">{{ message }}</p> }
+</section>
+} @else if (message) {
+    <section class="card"><p class="error">{{ message }}</p></section>
+}
