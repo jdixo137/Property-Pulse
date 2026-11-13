@@ -46,6 +46,10 @@ export class PropertyService {
     return this.http.get<Property[]>(this.apiUrl);
   }
 
+  getProperty(id: string): Observable<Property> {
+    return this.http.get<Property>(`${this.apiUrl}/${id}`);
+  }
+
   createProperty(property: Partial<Property>): Observable<Property> {
     return this.http.post<Property>(this.apiUrl, property);
   }
