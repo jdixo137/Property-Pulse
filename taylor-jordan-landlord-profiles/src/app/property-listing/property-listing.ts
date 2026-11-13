@@ -90,7 +90,7 @@ message = '';
 // Property Search [R]: text typed in the search box
 searchText = '';
 
-// The Add/Edit form only opens when needed (no search results, Add Property, or Edit),
+// The Add/Edit form only opens when needed (no search results, or Edit),
 // so the page starts with the address search like the user flow.
 showForm = false;
 
@@ -98,11 +98,6 @@ private scrollToForm() {
   setTimeout(() => document.getElementById('property-form')?.scrollIntoView({ behavior: 'smooth' }));
 }
 
-openAddForm() {
-  this.cancelEdit();
-  this.showForm = true;
-  this.scrollToForm();
-}
 
 ngOnInit() {
   this.restoreDraft();
@@ -187,11 +182,19 @@ get visibleProperties(): Property[] {
   );
 }
 
-// "No properties found": start a new listing with the searched address filled in.
+// "No properties found": start a new listing with what was searched filled into
+// the matching field, since search covers street, city, state or zip.
 addFromSearch() {
+  const text = this.searchText.trim();
   this.cancelEdit();
   this.showForm = true;
-  this.propertyForm.patchValue({ address: this.searchText.trim() });
+  // A 5-digit search can only be a zip code; anything else goes in Address
+  // (street names and city names can't be told apart reliably).
+  if (/^\d{5}$/.test(text)) {
+    this.propertyForm.patchValue({ zip: text });
+  } else {
+    this.propertyForm.patchValue({ address: text });
+  }
   this.searchText = '';
   this.scrollToForm();
 }
